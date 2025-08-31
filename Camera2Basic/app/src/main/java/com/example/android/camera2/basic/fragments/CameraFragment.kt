@@ -205,7 +205,7 @@ class CameraFragment : Fragment() {
         val SEC_RAW_STREAM = 
                 CameraCharacteristics.Key("samsung.android.scaler.availableExpertRawHighresYuvStreamConfigurations", IntArray::class.java)
 
-        Log.d(TAG, "zain - ${chars[SEC_RAW_STREAM].joinToString(", ")}")
+        Log.d(TAG, "zain - ${chars[SEC_RAW_STREAM]!!.joinToString(", ")}")
         
         val size = characteristics.get(
                 CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)!!
