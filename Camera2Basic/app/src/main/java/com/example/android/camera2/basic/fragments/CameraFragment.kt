@@ -205,6 +205,7 @@ class CameraFragment : Fragment() {
 
         val size: Size = if (args.pixelFormat == ImageFormat.RAW_SENSOR) {
             val secStreamConfigData: IntArray? = characteristics.get(SEC_STREAM_CONFIG)
+            Log.d("zain", " - ${secStreamConfigData?.contentToString()}")
             getCustomOutputSizes(secStreamConfigData, args.pixelFormat)
                     .maxByOrNull { it.width * it.height }!!
         } else {
