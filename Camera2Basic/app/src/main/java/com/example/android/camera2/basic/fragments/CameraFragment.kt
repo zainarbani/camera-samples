@@ -201,7 +201,7 @@ class CameraFragment : Fragment() {
         camera = openCamera(cameraManager, args.cameraId, cameraHandler)
 
         val SEC_STREAM_CONFIG = 
-                CameraCharacteristics.Key("samsung.android.scaler.availableHighresRawStreamConfigurations", IntArray::class.java)
+                CameraCharacteristics.Key("samsung.android.scaler.availablePictureStreamConfigurations", IntArray::class.java)
 
         val characteristics = cameraManager.getCameraCharacteristics(args.cameraId)
 
