@@ -514,7 +514,7 @@ class CameraFragment : Fragment() {
                val height = flatData[i + 2]
 
                if (format == desiredFormat)
-                   sizeList.add(Size(width, height))
+                   sizeList.add(Size(height, width))
             }
             return sizeList
         }
