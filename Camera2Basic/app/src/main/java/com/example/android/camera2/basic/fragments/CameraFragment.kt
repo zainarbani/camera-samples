@@ -203,8 +203,6 @@ class CameraFragment : Fragment() {
         val SEC_STREAM_CONFIG = 
                 CameraCharacteristics.Key("samsung.android.scaler.availablePictureStreamConfigurations", IntArray::class.java)
 
-        val characteristics = cameraManager.getCameraCharacteristics(args.cameraId)
-
         val size: Size = if (args.pixelFormat == ImageFormat.RAW_SENSOR) {
             val secStreamConfigData: IntArray? = characteristics.get(SEC_STREAM_CONFIG)
             getCustomOutputSizes(secStreamConfigData, args.pixelFormat)
