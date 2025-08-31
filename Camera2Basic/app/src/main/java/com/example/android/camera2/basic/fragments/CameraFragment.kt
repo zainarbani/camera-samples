@@ -200,15 +200,13 @@ class CameraFragment : Fragment() {
         camera = openCamera(cameraManager, args.cameraId, cameraHandler)
 
         // Initialize an image reader which will be used to capture still photos
-        Log.d(TAG, "zain: pixelFormat: ${args.pixelFormat}")
-        val streamConfig: String = when (args.pixelFormat) {
-            32 -> "samsung.android.scaler.availableExpertRawHighresRawStreamConfigurations"
-            1768253795 -> "samsung.android.depth.availableDepthStreamConfigurations"
-            else -> "android.scaler.availableStreamConfigurations"
-        }
+        val SEC_RAW_STREAM =
+                CameraCharacteristics.Key("samsung.android.scaler.availableExpertRawHighresYuvStreamConfigurations", IntArray::class.java)
+
+        Log.d("TAG, "zain - ${SEC_RAW_STREAM.joinToString(", ")}")
         
         val size = characteristics.get(
-                CameraCharacteristics.Key(streamConfig, IntArray::class.java))!!
+                CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)!!
                 .getOutputSizes(args.pixelFormat).maxByOrNull { it.height * it.width }!!
         imageReader = ImageReader.newInstance(
                 size.width, size.height, args.pixelFormat, IMAGE_BUFFER_SIZE)
