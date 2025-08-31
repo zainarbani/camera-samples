@@ -35,6 +35,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
+import android.util.Size
 import android.view.LayoutInflater
 import android.view.Surface
 import android.view.SurfaceHolder
@@ -199,17 +200,20 @@ class CameraFragment : Fragment() {
         // Open the selected camera
         camera = openCamera(cameraManager, args.cameraId, cameraHandler)
 
-        val chars = cameraManager.getCameraCharacteristics(args.cameraId)
-
-        // Initialize an image reader which will be used to capture still photos
-        val SEC_RAW_STREAM = 
+        val SEC_STREAM_CONFIG = 
                 CameraCharacteristics.Key("samsung.android.scaler.availableHighresRawStreamConfigurations", IntArray::class.java)
 
-        Log.d(TAG, "zain - ${chars[SEC_RAW_STREAM]!!.joinToString(", ")}")
+        val characteristics = cameraManager.getCameraCharacteristics(args.cameraId)
+
+        val size: Size? = if (args.pixelFormat == 32) {
+            val secStreamConfigData: IntArray? = characteristics.get(SEC_STREAM_CONFIG)
+            getCustomOutputSizes(secStreamConfigData, args.pixelFormat).maxByOrNull { it.height * it.width }
+        } else {
+            characteristics.get(
+                    CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+                    ?.getOutputSizes(args.pixelFormat)?.maxByOrNull { it.height * it.width }
+        }
         
-        val size = characteristics.get(
-                CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)!!
-                .getOutputSizes(args.pixelFormat).maxByOrNull { it.height * it.width }!!
         imageReader = ImageReader.newInstance(
                 size.width, size.height, args.pixelFormat, IMAGE_BUFFER_SIZE)
 
@@ -497,6 +501,22 @@ class CameraFragment : Fragment() {
         private fun createFile(context: Context, extension: String): File {
             val sdf = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_SSS", Locale.US)
             return File(context.filesDir, "IMG_${sdf.format(Date())}.$extension")
+        }
+
+        fun getCustomOutputSizes(flatData: IntArray?, desiredFormat: Int): List<Size> {
+            if (flatData == null || flatData.isEmpty() || flatData.size % 3 != 0)
+                return emptyList()
+
+            val sizeList = mutableListOf<Size>()
+            for (i in flatData.indices step 3) {
+               val format = flatData[i]
+               val width = flatData[i + 1]
+               val height = flatData[i + 2]
+
+               if (format == desiredFormat)
+                   sizeList.add(Size(width, height))
+            }
+            return sizeList
         }
     }
 }
