@@ -205,15 +205,17 @@ class CameraFragment : Fragment() {
 
         val characteristics = cameraManager.getCameraCharacteristics(args.cameraId)
 
-        val size: Size? = if (args.pixelFormat == 32) {
+        val size: Size = if (args.pixelFormat == ImageFormat.RAW_SENSOR) {
             val secStreamConfigData: IntArray? = characteristics.get(SEC_STREAM_CONFIG)
-            getCustomOutputSizes(secStreamConfigData, args.pixelFormat).maxByOrNull { it.height * it.width }
+            getCustomOutputSizes(secStreamConfigData, args.pixelFormat)
+                    .maxByOrNull { it.width * it.height }!!
         } else {
             characteristics.get(
-                    CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
-                    ?.getOutputSizes(args.pixelFormat)?.maxByOrNull { it.height * it.width }
+                    CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)!!
+                    .getOutputSizes(args.pixelFormat)!!
+                    .maxByOrNull { it.height * it.width }!!
         }
-        
+
         imageReader = ImageReader.newInstance(
                 size.width, size.height, args.pixelFormat, IMAGE_BUFFER_SIZE)
 
