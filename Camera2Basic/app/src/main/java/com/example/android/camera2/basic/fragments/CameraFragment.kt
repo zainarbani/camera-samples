@@ -199,6 +199,8 @@ class CameraFragment : Fragment() {
         // Open the selected camera
         camera = openCamera(cameraManager, args.cameraId, cameraHandler)
 
+        val chars = cameraManager.getCameraCharacteristics(args.cameraId)
+
         // Initialize an image reader which will be used to capture still photos
         val SEC_RAW_STREAM = 
                 CameraCharacteristics.Key("samsung.android.scaler.availableExpertRawHighresYuvStreamConfigurations", IntArray::class.java)
