@@ -200,10 +200,10 @@ class CameraFragment : Fragment() {
         camera = openCamera(cameraManager, args.cameraId, cameraHandler)
 
         // Initialize an image reader which will be used to capture still photos
-        val SEC_RAW_STREAM =
+        val SEC_RAW_STREAM = 
                 CameraCharacteristics.Key("samsung.android.scaler.availableExpertRawHighresYuvStreamConfigurations", IntArray::class.java)
 
-        Log.d("TAG, "zain - ${SEC_RAW_STREAM.joinToString(", ")}")
+        Log.d(TAG, "zain - ${SEC_RAW_STREAM.joinToString(", ")}")
         
         val size = characteristics.get(
                 CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)!!
