@@ -212,7 +212,7 @@ class CameraFragment : Fragment() {
             characteristics.get(
                     CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)!!
                     .getOutputSizes(args.pixelFormat)!!
-                    .maxByOrNull { it.height * it.width }!!
+                    .maxByOrNull { it.width * it.height }!!
         }
 
         imageReader = ImageReader.newInstance(
@@ -505,17 +505,17 @@ class CameraFragment : Fragment() {
         }
 
         fun getCustomOutputSizes(flatData: IntArray?, desiredFormat: Int): List<Size> {
-            if (flatData == null || flatData.isEmpty() || flatData.size % 3 != 0)
+            if (flatData == null || flatData.isEmpty())
                 return emptyList()
 
             val sizeList = mutableListOf<Size>()
-            for (i in flatData.indices step 3) {
+            for (i in flatData.indices step 4) {
                val format = flatData[i]
                val width = flatData[i + 1]
                val height = flatData[i + 2]
 
                if (format == desiredFormat)
-                   sizeList.add(Size(height, width))
+                   sizeList.add(Size(width, height))
             }
             return sizeList
         }
