@@ -203,7 +203,7 @@ class CameraFragment : Fragment() {
 
         // Initialize an image reader which will be used to capture still photos
         val SEC_RAW_STREAM = 
-                CameraCharacteristics.Key("samsung.android.scaler.availableExpertRawHighresStreamConfigurations", IntArray::class.java)
+                CameraCharacteristics.Key("samsung.android.scaler.availableExpertRawHighresRawStreamConfigurations", IntArray::class.java)
 
         Log.d(TAG, "zain - ${chars[SEC_RAW_STREAM]!!.joinToString(", ")}")
         
